@@ -1,0 +1,52 @@
+CREATE TABLE batches (
+    batch_key SERIAL PRIMARY KEY,
+    in_date INT,
+    expiration_date INT,
+    item_name VARCHAR(255),
+    FOREIGN KEY (item_name) REFERENCES inventory(item_name),
+    ingredient_id INT,
+    FOREIGN KEY (ingredient_id) REFERENCES ingredients(id)
+);
+
+CREATE TABLE inventory (
+    item_name VARCHAR(255) PRIMARY KEY,
+    batch_count INT
+);
+
+CREATE TABLE accounts (
+    account_type INT,
+    login_key VARCHAR(255) PRIMARY KEY
+);
+
+CREATE TABLE menu_items (
+    id INT PRIMARY KEY,
+    price INT,
+    name VARCHAR(255)
+);
+
+CREATE TABLE ingredients (
+    id INT PRIMARY KEY,
+    price INT,
+    name VARCHAR(255)
+);
+
+CREATE TABLE menu_components (
+    menu_item INT,
+    FOREIGN KEY (menu_item) REFERENCES menu_items(id),
+    ingredient_item INT,
+    FOREIGN KEY (ingredient_item) REFERENCES ingredients(id),
+    amount INT
+);
+
+CREATE TABLE order_menu_components (
+    order_key INT,
+    FOREIGN KEY (order_key) REFERENCES orders(order_key),
+    menu_item INT,
+    FOREIGN KEY (menu_item) REFERENCES menu_items(id),
+    count INT
+);
+
+CREATE TABLE orders (
+    order_key INT PRIMARY KEY,
+    timestamp BIGINT
+);
